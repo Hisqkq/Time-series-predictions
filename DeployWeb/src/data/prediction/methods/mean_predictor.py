@@ -1,17 +1,15 @@
 import pandas as pd
 
-from typing import Self, Any
-
 from data.city.load_cities import City
 from data.prediction.forecast_model import ForecastModel
 
 class PredictByMean(ForecastModel):
     name = 'Moyenne'
 
-    def __init__(self: Self, city: City, train_size: float=0.7) -> None:
+    def __init__(self, city: City, train_size: float=0.7) -> None:
         super().__init__(city, train_size)
 
-    def train(self: Self) -> None:
+    def train(self) -> None:
         df = self.train_dataset.copy()
         df['hours'] = df.index.hour
         df['days'] = pd.Categorical(
@@ -22,7 +20,7 @@ class PredictByMean(ForecastModel):
         
         self.model: pd.DataFrame = df.groupby(['days', 'hours'], observed=False).mean()
 
-    def predict(self: Self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series:
+    def predict(self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series:
         serie = self.model[selected_station]
         serie.name = PredictByMean.name
 

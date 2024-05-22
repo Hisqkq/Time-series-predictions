@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from typing import Self, Any
 from data.city.load_cities import City
 from data.prediction.forecast_model import ForecastModel
 from data.data import get_acp_predictor
@@ -10,11 +9,11 @@ from data.data import get_acp_predictor
 class PredictByPCA(ForecastModel):
     name = 'PCA_Reconstruction'
 
-    def __init__(self: Self, city: City, train_size: float=0.7, num_components: int=4) -> None:
+    def __init__(self, city: City, train_size: float=0.7, num_components: int=4) -> None:
         super().__init__(city, train_size)
         self.num_components = num_components 
 
-    def train(self: Self) -> None:
+    def train(self) -> None:
         df = self.train_dataset.copy()
         df['hours'] = df.index.hour
         df['days'] = pd.Categorical(

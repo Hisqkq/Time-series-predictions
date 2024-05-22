@@ -2,7 +2,6 @@ import pandas as pd
 
 from sklearn.ensemble import RandomForestRegressor
 from os import makedirs
-from typing import Self
 
 from data.city.load_cities import City
 from data.data import get_interpolated_indices
@@ -11,12 +10,12 @@ from data.prediction.forecast_model import ForecastModel, PATH_MODEL
 class RandomForestPredictor(ForecastModel):
     name = 'RandomForest'
 
-    def __init__(self: Self, city: City, train_size: float = 0.7) -> None:
+    def __init__(self, city: City, train_size: float = 0.7) -> None:
         super().__init__(city, train_size)
         self.models: dict[str, RandomForestRegressor] = {}
         makedirs(f'{PATH_MODEL}{self.name}', exist_ok=True)
 
-    def train(self: Self) -> None:
+    def train(self) -> None:
         df = self.train_dataset.copy()
 
         for station in df.columns:
@@ -36,7 +35,7 @@ class RandomForestPredictor(ForecastModel):
             
             self.models[station] = current_model
 
-    def predict(self: Self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series:
+    def predict(self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series:
         if selected_station not in self.models:
             raise ValueError(f'Model for station {selected_station} not found.')
 

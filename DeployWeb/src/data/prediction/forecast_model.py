@@ -3,7 +3,6 @@ import joblib
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-from typing import Self, Any
 from data.city.load_cities import City
 from data.data import get_interpolated_indices
 
@@ -14,7 +13,7 @@ PATH_MODEL: str = './data/prediction/methods/'
 class ForecastModel(ABC):
     name = 'BaseModel'
     
-    def __init__(self: Self, city: City, train_size: float=0.7) -> None:
+    def __init__(self, city: City, train_size: float=0.7) -> None:
         self.city = city
         self.train_size = train_size
 
@@ -23,23 +22,23 @@ class ForecastModel(ABC):
         
         self.split_data()
 
-    def split_data(self: Self) -> None:
+    def split_data(self) -> None:
         split_point = int(len(self.city.df_hours) * self.train_size)
         self.train_dataset = self.df_dataset.iloc[:split_point]
         self.test_dataset = self.df_dataset.iloc[split_point:]
     
-    def save_model(self: Self, model: Any, station_name: str, compress: int=3) -> None:
+    def save_model(self, model, station_name: str, compress: int=3) -> None:
         joblib.dump(model, f'{PATH_MODEL}{self.name}/{station_name}.pkl', compress=compress)
 
-    def load_model(self: Self, station_name: str) -> Any:
+    def load_model(self, station_name: str):
         return joblib.load(f'{PATH_MODEL}{self.name}/{station_name}.pkl')
 
     @abstractmethod
-    def train(self: Self) -> None:
+    def train(self) -> None:
         pass
 
     @abstractmethod
-    def predict(self: Self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series: # DOIT RETOURNER UNE SERIE !
+    def predict(self, selected_station: str, data: pd.Series, forecast_length: int) -> pd.Series: # DOIT RETOURNER UNE SERIE !
         pass
     
     @staticmethod
