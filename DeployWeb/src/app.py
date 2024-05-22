@@ -11,6 +11,7 @@ app = Dash(
     external_stylesheets=[themes.PULSE, icons.BOOTSTRAP],
     suppress_callback_exceptions=True
 )
+server = app.server
 
 app.title = 'TER'
 app._favicon = './pictures/bike_icon_2.svg'
