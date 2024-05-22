@@ -12,3 +12,4 @@ scikit-learn==1.4.1.post1
 seaborn==0.13.2
 shapely==2.0.3
 xgboost==1.6.1
+gunicorn==19.7.1
